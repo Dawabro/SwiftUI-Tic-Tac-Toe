@@ -16,6 +16,7 @@
 		C532A77B27E3FB33002EC8DC /* GameGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A77A27E3FB33002EC8DC /* GameGridView.swift */; };
 		C5EC06E827E9FD6500A0118E /* MarkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06E727E9FD6500A0118E /* MarkModel.swift */; };
 		C5EC06ED27E9FDF700A0118E /* GridIndexGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */; };
+		C5EC06F827EA05E900A0118E /* FetchRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06F727EA05E900A0118E /* FetchRateLimiter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		C532A77A27E3FB33002EC8DC /* GameGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGridView.swift; sourceTree = "<group>"; };
 		C5EC06E727E9FD6500A0118E /* MarkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkModel.swift; sourceTree = "<group>"; };
 		C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridIndexGenerator.swift; sourceTree = "<group>"; };
+		C5EC06F727EA05E900A0118E /* FetchRateLimiter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchRateLimiter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				C532A77A27E3FB33002EC8DC /* GameGridView.swift */,
 				C532A77527E3F5D4002EC8DC /* MarkCell.swift */,
 				C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */,
+				C5EC06F727EA05E900A0118E /* FetchRateLimiter.swift */,
 				C5EC06E627E9FD5500A0118E /* Models */,
 				C532A74B27E3F51C002EC8DC /* Assets.xcassets */,
 				C532A75027E3F51C002EC8DC /* Info.plist */,
@@ -277,6 +280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5EC06E827E9FD6500A0118E /* MarkModel.swift in Sources */,
+				C5EC06F827EA05E900A0118E /* FetchRateLimiter.swift in Sources */,
 				C532A77B27E3FB33002EC8DC /* GameGridView.swift in Sources */,
 				C5EC06ED27E9FDF700A0118E /* GridIndexGenerator.swift in Sources */,
 				C532A77627E3F5D4002EC8DC /* MarkCell.swift in Sources */,
