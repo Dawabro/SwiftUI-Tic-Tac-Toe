@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		C532A74827E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A74727E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift */; };
-		C532A74A27E3F515002EC8DC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A74927E3F515002EC8DC /* ContentView.swift */; };
 		C532A74C27E3F51C002EC8DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C532A74B27E3F51C002EC8DC /* Assets.xcassets */; };
 		C532A74F27E3F51C002EC8DC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C532A74E27E3F51C002EC8DC /* Preview Assets.xcassets */; };
 		C532A75A27E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A75927E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeTests.swift */; };
 		C532A76527E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A76427E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeUITests.swift */; };
 		C532A77627E3F5D4002EC8DC /* MarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A77527E3F5D4002EC8DC /* MarkCell.swift */; };
 		C532A77B27E3FB33002EC8DC /* GameGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A77A27E3FB33002EC8DC /* GameGridView.swift */; };
+		C5EC06E827E9FD6500A0118E /* MarkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06E727E9FD6500A0118E /* MarkModel.swift */; };
+		C5EC06ED27E9FDF700A0118E /* GridIndexGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +38,6 @@
 /* Begin PBXFileReference section */
 		C532A74427E3F515002EC8DC /* SwiftUI Tic Tac Toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SwiftUI Tic Tac Toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C532A74727E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI_Tic_Tac_ToeApp.swift; sourceTree = "<group>"; };
-		C532A74927E3F515002EC8DC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C532A74B27E3F51C002EC8DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C532A74E27E3F51C002EC8DC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C532A75027E3F51C002EC8DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +49,8 @@
 		C532A76627E3F51D002EC8DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C532A77527E3F5D4002EC8DC /* MarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCell.swift; sourceTree = "<group>"; };
 		C532A77A27E3FB33002EC8DC /* GameGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGridView.swift; sourceTree = "<group>"; };
+		C5EC06E727E9FD6500A0118E /* MarkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkModel.swift; sourceTree = "<group>"; };
+		C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridIndexGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,9 +102,10 @@
 			isa = PBXGroup;
 			children = (
 				C532A74727E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift */,
-				C532A74927E3F515002EC8DC /* ContentView.swift */,
 				C532A77A27E3FB33002EC8DC /* GameGridView.swift */,
 				C532A77527E3F5D4002EC8DC /* MarkCell.swift */,
+				C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */,
+				C5EC06E627E9FD5500A0118E /* Models */,
 				C532A74B27E3F51C002EC8DC /* Assets.xcassets */,
 				C532A75027E3F51C002EC8DC /* Info.plist */,
 				C532A74D27E3F51C002EC8DC /* Preview Content */,
@@ -134,6 +137,14 @@
 				C532A76627E3F51D002EC8DC /* Info.plist */,
 			);
 			path = "SwiftUI Tic Tac ToeUITests";
+			sourceTree = "<group>";
+		};
+		C5EC06E627E9FD5500A0118E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C5EC06E727E9FD6500A0118E /* MarkModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,9 +276,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5EC06E827E9FD6500A0118E /* MarkModel.swift in Sources */,
 				C532A77B27E3FB33002EC8DC /* GameGridView.swift in Sources */,
+				C5EC06ED27E9FDF700A0118E /* GridIndexGenerator.swift in Sources */,
 				C532A77627E3F5D4002EC8DC /* MarkCell.swift in Sources */,
-				C532A74A27E3F515002EC8DC /* ContentView.swift in Sources */,
 				C532A74827E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

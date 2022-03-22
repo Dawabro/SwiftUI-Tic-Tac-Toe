@@ -7,82 +7,6 @@
 
 import SwiftUI
 
-final class MarkModel: ObservableObject {
-    var type: MarkType?
-    var inWinningSequence = false
-    
-    init(type: MarkType?) {
-        self.type = type
-    }
-    
-    convenience init() {
-        self.init(type: nil)
-    }
-}
-
-struct Mark: Identifiable {
-    let id: UUID
-    let type: MarkType?
-    let inWinningSequence: Bool
-    
-    init(type: MarkType?, inWinningSequence: Bool) {
-        self.id = UUID()
-        self.type = type
-        self.inWinningSequence = inWinningSequence
-    }
-    
-    init() {
-        self.init(type: nil, inWinningSequence: false)
-    }
-}
-
-final class GridIndexes {
-    private let columnCount: Int
-    private let rowCount: Int
-    private let totalItems: Int
-    private(set) var rowIndexes = [[Int]]()
-    private(set) var columnIndexes = [[Int]]()
-    private(set) var diagnalIndexes = [[Int]]()
-    
-    init(columns: Int, rows: Int) {
-        self.columnCount = columns
-        self.rowCount = rows
-        self.totalItems = (columns * rows)
-        calculateIndicies()
-    }
-    
-    private func calculateIndicies() {
-        calculateRows()
-        calculateColumns()
-        calculateDiagnals()
-    }
-    
-    private func calculateRows() {
-        rowIndexes = stride(from: 0, to: totalItems, by: columnCount).map {
-            Array([$0..<Swift.min($0 + columnCount, totalItems)]).flatMap { $0.map { $0 } }
-        }
-    }
-    
-    private func calculateColumns() {
-        columnIndexes = []
-        
-        for c in 0..<columnCount {
-            let columns = stride(from: c, to: totalItems, by: columnCount).map { $0 }
-            var newColumn = [Int]()
-            columns.forEach { index in
-                newColumn.append(index)
-            }
-            columnIndexes.append(newColumn)
-        }
-    }
-    
-    private func calculateDiagnals() {
-        let leftToRightDiagnal = stride(from: 0, to: totalItems, by: (columnCount + 1)).map { $0 }
-        let rightToLeftDiagnal = stride(from: (totalItems - columnCount), to: 0, by: -(columnCount - 1)).map { $0 }.sorted()
-        diagnalIndexes = [leftToRightDiagnal, rightToLeftDiagnal]
-    }
-}
-
 final class GameModel: ObservableObject {
     @Published var markGrid: [Mark]
     @Published var gameOverMan = false
@@ -114,7 +38,7 @@ final class GameModel: ObservableObject {
     }
     
     private func populateSequences() {
-        let indicies = GridIndexes(columns: 3, rows: 3)
+        let indicies = GridIndexGenerator(columns: 3, rows: 3)
         self.rows = indicies.rowIndexes.map { $0.map { gameGridModel[$0] } }
         self.columns = indicies.columnIndexes.map { $0.map { gameGridModel[$0] } }
         self.diagnals = indicies.diagnalIndexes.map { $0.map { gameGridModel[$0] } }
