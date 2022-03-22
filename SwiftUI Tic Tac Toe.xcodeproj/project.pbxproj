@@ -13,6 +13,8 @@
 		C532A74F27E3F51C002EC8DC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C532A74E27E3F51C002EC8DC /* Preview Assets.xcassets */; };
 		C532A75A27E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A75927E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeTests.swift */; };
 		C532A76527E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A76427E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeUITests.swift */; };
+		C532A77627E3F5D4002EC8DC /* MarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A77527E3F5D4002EC8DC /* MarkCell.swift */; };
+		C532A77B27E3FB33002EC8DC /* GameGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A77A27E3FB33002EC8DC /* GameGridView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		C532A76027E3F51D002EC8DC /* SwiftUI Tic Tac ToeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI Tic Tac ToeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C532A76427E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI_Tic_Tac_ToeUITests.swift; sourceTree = "<group>"; };
 		C532A76627E3F51D002EC8DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C532A77527E3F5D4002EC8DC /* MarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCell.swift; sourceTree = "<group>"; };
+		C532A77A27E3FB33002EC8DC /* GameGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 			children = (
 				C532A74727E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift */,
 				C532A74927E3F515002EC8DC /* ContentView.swift */,
+				C532A77A27E3FB33002EC8DC /* GameGridView.swift */,
+				C532A77527E3F5D4002EC8DC /* MarkCell.swift */,
 				C532A74B27E3F51C002EC8DC /* Assets.xcassets */,
 				C532A75027E3F51C002EC8DC /* Info.plist */,
 				C532A74D27E3F51C002EC8DC /* Preview Content */,
@@ -259,6 +265,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C532A77B27E3FB33002EC8DC /* GameGridView.swift in Sources */,
+				C532A77627E3F5D4002EC8DC /* MarkCell.swift in Sources */,
 				C532A74A27E3F515002EC8DC /* ContentView.swift in Sources */,
 				C532A74827E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift in Sources */,
 			);
