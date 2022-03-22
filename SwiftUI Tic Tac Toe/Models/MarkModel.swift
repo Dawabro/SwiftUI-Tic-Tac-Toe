@@ -13,10 +13,12 @@ enum MarkType: String {
 }
 
 final class MarkModel: ObservableObject {
+    let id: UUID
     var type: MarkType?
     var inWinningSequence = false
     
     init(type: MarkType?) {
+        self.id = UUID()
         self.type = type
     }
     
@@ -29,11 +31,13 @@ struct Mark: Identifiable {
     let id: UUID
     let type: MarkType?
     let inWinningSequence: Bool
+    let modelID: UUID?
     
-    init(type: MarkType?, inWinningSequence: Bool) {
+    init(type: MarkType?, inWinningSequence: Bool, modelID: UUID? = nil) {
         self.id = UUID()
         self.type = type
         self.inWinningSequence = inWinningSequence
+        self.modelID = modelID
     }
     
     init() {
