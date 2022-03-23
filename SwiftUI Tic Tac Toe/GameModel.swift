@@ -56,50 +56,10 @@ final class GameModel: ObservableObject {
     }
     
     private func aiMove() {
-        if let blockMoveID = bestBlockMoveID {
-            makeMove(on: blockMoveID)
-        } else {
-            guard let randomID = randomOpenMarkID else { return }
-            makeMove(on: randomID)
-        }
+        let aiBrain = AIBrain(grid: markGrid, sequences: [rows, columns, diagnals])
+        guard let aiMarkID = aiBrain.moveID() else { return }
+        makeMove(on: aiMarkID)
         aiThinking = false
-    }
-    
-    private var bestBlockMoveID: UUID? {
-        let sequences = [rows, columns, diagnals]
-        let availableBlockMoves = sequences.flatMap { blockMoves($0) }
-        
-        switch availableBlockMoves.count {
-        case 0:
-            return nil
-        case 1:
-            let modelID = availableBlockMoves.first?.id
-            return markIDFrom(modelID: modelID)
-        default:
-            // Currently picking random block move, update to choose "best" block move
-            let modelID = availableBlockMoves.randomElement()?.id
-            return markIDFrom(modelID: modelID)
-        }
-    }
-    
-    private func markIDFrom(modelID: UUID?) -> UUID? {
-        guard let modelID = modelID else { return nil }
-        return markGrid.first { $0.modelID == modelID }?.id
-    }
-    
-    private func blockMoves(_ array: [[MarkModel]]) -> [MarkModel] {
-        let markToBlock: MarkType = .x // make dynamic based on which mark player is using
-        return array.compactMap { availableBlockMove($0, markTypeToBlock: markToBlock) }
-    }
-    
-    private func availableBlockMove(_ array: [MarkModel], markTypeToBlock markType: MarkType) -> MarkModel? {
-        guard array.filter({ $0.type == markType }).count == 2 else { return nil }
-        return array.filter({ $0.type == nil }).first
-    }
-    
-    private var randomOpenMarkID: UUID? {
-        let openMarks = markGrid.filter { $0.type == nil }
-        return openMarks.randomElement()?.id
     }
     
     func resetGame() {

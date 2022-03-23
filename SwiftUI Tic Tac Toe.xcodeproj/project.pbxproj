@@ -14,6 +14,7 @@
 		C532A76527E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A76427E3F51D002EC8DC /* SwiftUI_Tic_Tac_ToeUITests.swift */; };
 		C532A77627E3F5D4002EC8DC /* MarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A77527E3F5D4002EC8DC /* MarkCell.swift */; };
 		C532A77B27E3FB33002EC8DC /* GameGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C532A77A27E3FB33002EC8DC /* GameGridView.swift */; };
+		C5AE2D3D27EAB36800A4B225 /* AIBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AE2D3C27EAB36800A4B225 /* AIBrain.swift */; };
 		C5EC06E827E9FD6500A0118E /* MarkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06E727E9FD6500A0118E /* MarkModel.swift */; };
 		C5EC06ED27E9FDF700A0118E /* GridIndexGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */; };
 		C5EC06F827EA05E900A0118E /* FetchRateLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC06F727EA05E900A0118E /* FetchRateLimiter.swift */; };
@@ -51,6 +52,7 @@
 		C532A76627E3F51D002EC8DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C532A77527E3F5D4002EC8DC /* MarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCell.swift; sourceTree = "<group>"; };
 		C532A77A27E3FB33002EC8DC /* GameGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGridView.swift; sourceTree = "<group>"; };
+		C5AE2D3C27EAB36800A4B225 /* AIBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBrain.swift; sourceTree = "<group>"; };
 		C5EC06E727E9FD6500A0118E /* MarkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkModel.swift; sourceTree = "<group>"; };
 		C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridIndexGenerator.swift; sourceTree = "<group>"; };
 		C5EC06F727EA05E900A0118E /* FetchRateLimiter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchRateLimiter.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				C532A74727E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift */,
 				C532A77A27E3FB33002EC8DC /* GameGridView.swift */,
 				C5EC06FC27EA26B300A0118E /* GameModel.swift */,
+				C5AE2D3C27EAB36800A4B225 /* AIBrain.swift */,
 				C532A77527E3F5D4002EC8DC /* MarkCell.swift */,
 				C5EC06EC27E9FDF700A0118E /* GridIndexGenerator.swift */,
 				C5EC06F727EA05E900A0118E /* FetchRateLimiter.swift */,
@@ -288,6 +291,7 @@
 				C5EC06ED27E9FDF700A0118E /* GridIndexGenerator.swift in Sources */,
 				C532A77627E3F5D4002EC8DC /* MarkCell.swift in Sources */,
 				C5EC06FD27EA26B300A0118E /* GameModel.swift in Sources */,
+				C5AE2D3D27EAB36800A4B225 /* AIBrain.swift in Sources */,
 				C532A74827E3F515002EC8DC /* SwiftUI_Tic_Tac_ToeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
