@@ -5,12 +5,19 @@
 //  Created by David W. Brown on 3/22/22.
 //
 
+import Combine
 import Foundation
+
+enum GameResult {
+    case x
+    case o
+    case cat
+}
 
 final class GameModel: ObservableObject {
     @Published var markGrid: [Mark]
-    @Published var gameOverMan = false
-    @Published var winningMark: MarkType? = nil
+    @Published var gameResult: GameResult?
+    @Published var winPercentage = ""
     private var gameGridModel: [MarkModel] = [MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel()]
     private var rows = [[MarkModel]]()
     private var columns = [[MarkModel]]()
@@ -19,27 +26,43 @@ final class GameModel: ObservableObject {
     private var aiThinking = false
     private let aiThinkTime = 0.4...0.75
     private var rateLimiter = RateLimiter(maxRefreshRate: 0.25)
+    private var gameStats = GameStats()
+    private var subscriptions = Set<AnyCancellable>()
+    private let winPercentageFormatter = NumberFormatter()
     
     init() {
         self.markGrid = gameGridModel.map { Mark(type: $0.type, inWinningSequence: $0.inWinningSequence, modelID: $0.id) }
+        self.winPercentageFormatter.numberStyle = .percent
         populateSequences()
+        self.setupPublishers()
+    }
+    
+    private func setupPublishers() {
+        $gameResult.sink { newResult in
+            self.updateStats(newResult)
+        }.store(in: &subscriptions)
     }
     
     func tapped(_ mark: Mark) {
         guard !aiThinking else { return }
         rateLimiter.execute { playerMove(on: mark.id) }
+        
+        guard gameResult == nil else { return }
+        if hasOpenMarks {
+            makeAIMove()
+        } else {
+            gameResult = .cat
+        }
     }
     
     private func playerMove(on id: UUID) {
         guard playersTurn else { return }
         makeMove(on: id)
-        
-        if hasOpenMarks && !gameOverMan {
-            aiThinking = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + randomAIThinkTime, execute: aiMove)
-        } else {
-            gameOverMan = true
-        }
+    }
+    
+    private func makeAIMove() {
+        aiThinking = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + randomAIThinkTime, execute: aiMove)
     }
     
     private var randomAIThinkTime: Double {
@@ -65,8 +88,7 @@ final class GameModel: ObservableObject {
     func resetGame() {
         gameGridModel = [MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel()]
         populateSequences()
-        winningMark = nil
-        gameOverMan = false
+        gameResult = nil
         updateMarkGrid()
         playersTurn = true
     }
@@ -84,14 +106,14 @@ final class GameModel: ObservableObject {
     }
     
     private func checkForWin() {
-        gameOverMan = checkForWinningSequence(rows) || checkForWinningSequence(columns) || checkForWinningSequence(diagnals)
+        guard checkForWinningSequence(rows) || checkForWinningSequence(columns) || checkForWinningSequence(diagnals) else { return }
+        gameResult = playersTurn ? .x : .o
     }
     
     private func checkForWinningSequence(_ array: [[MarkModel]]) -> Bool {
         for markSequence in array {
             if hasWin(markSequence) {
                 markWinningSequence(markSequence)
-                winningMark = playersTurn ? .x : .o
                 return true
             }
         }
@@ -110,5 +132,19 @@ final class GameModel: ObservableObject {
     
     private var hasOpenMarks: Bool {
         markGrid.filter { $0.type == nil }.isEmpty == false
+    }
+    
+    private func updateStats(_ result: GameResult?) {
+        guard let result = result else { return }
+        switch result {
+        case .x:
+            gameStats.addWin()
+        case .o:
+            gameStats.addLose()
+        case .cat:
+            self.gameStats.addTie()
+        }
+        
+        winPercentage = winPercentageFormatter.string(from: NSNumber(value: gameStats.winPercentage)) ?? "%0.0"
     }
 }
