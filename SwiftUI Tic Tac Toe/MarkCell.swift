@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum MarkType: String {
-    case x = "xmark"
-    case o = "circle"
-}
-
 struct MarkCell: View {
     let mark: Mark
     private let minSize: CGFloat = 90

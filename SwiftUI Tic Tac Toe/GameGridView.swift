@@ -7,183 +7,115 @@
 
 import SwiftUI
 
-final class MarkModel: ObservableObject {
-    var type: MarkType?
-    var inWinningSequence = false
-    
-    init(type: MarkType?) {
-        self.type = type
-    }
-    
-    convenience init() {
-        self.init(type: nil)
-    }
-}
-
-struct Mark: Identifiable {
-    let id: UUID
-    let type: MarkType?
-    let inWinningSequence: Bool
-    
-    init(type: MarkType?, inWinningSequence: Bool) {
-        self.id = UUID()
-        self.type = type
-        self.inWinningSequence = inWinningSequence
-    }
-    
-    init() {
-        self.init(type: nil, inWinningSequence: false)
-    }
-}
-
-final class GridIndexes {
-    private let columnCount: Int
-    private let rowCount: Int
-    private let totalItems: Int
-    private(set) var rowIndexes = [[Int]]()
-    private(set) var columnIndexes = [[Int]]()
-    private(set) var diagnalIndexes = [[Int]]()
-    
-    init(columns: Int, rows: Int) {
-        self.columnCount = columns
-        self.rowCount = rows
-        self.totalItems = (columns * rows)
-        calculateIndicies()
-    }
-    
-    private func calculateIndicies() {
-        calculateRows()
-        calculateColumns()
-        calculateDiagnals()
-    }
-    
-    private func calculateRows() {
-        rowIndexes = stride(from: 0, to: totalItems, by: columnCount).map {
-            Array([$0..<Swift.min($0 + columnCount, totalItems)]).flatMap { $0.map { $0 } }
-        }
-    }
-    
-    private func calculateColumns() {
-        columnIndexes = []
-        
-        for c in 0..<columnCount {
-            let columns = stride(from: c, to: totalItems, by: columnCount).map { $0 }
-            var newColumn = [Int]()
-            columns.forEach { index in
-                newColumn.append(index)
-            }
-            columnIndexes.append(newColumn)
-        }
-    }
-    
-    private func calculateDiagnals() {
-        let leftToRightDiagnal = stride(from: 0, to: totalItems, by: (columnCount + 1)).map { $0 }
-        let rightToLeftDiagnal = stride(from: (totalItems - columnCount), to: 0, by: -(columnCount - 1)).map { $0 }.sorted()
-        diagnalIndexes = [leftToRightDiagnal, rightToLeftDiagnal]
-    }
-}
-
-final class GameModel: ObservableObject {
-    @Published var markGrid: [Mark]
-    @Published var gameOverMan = false
-    private var gameGridModel: [MarkModel] = [MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel()]
-    private var rows = [[MarkModel]]()
-    private var columns = [[MarkModel]]()
-    private var diagnals = [[MarkModel]]()
-    private var playersTurn = true
-    
-    init() {
-        self.markGrid = gameGridModel.map { Mark(type: $0.type, inWinningSequence: $0.inWinningSequence) }
-        populateSequences()
-    }
-    
-    func tapped(_ mark: Mark) {
-        guard let index = markGrid.firstIndex(where: { $0.id == mark.id }) else { return }
-        print(index)
-        gameGridModel[index].type = .x
-        checkForWin()
-        updateMarkGrid()
-    }
-    
-    func resetGame() {
-        gameGridModel = [MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel(), MarkModel()]
-        populateSequences()
-        gameOverMan = false
-        updateMarkGrid()
-        playersTurn = true
-    }
-    
-    private func populateSequences() {
-        let indicies = GridIndexes(columns: 3, rows: 3)
-        self.rows = indicies.rowIndexes.map { $0.map { gameGridModel[$0] } }
-        self.columns = indicies.columnIndexes.map { $0.map { gameGridModel[$0] } }
-        self.diagnals = indicies.diagnalIndexes.map { $0.map { gameGridModel[$0] } }
-    }
-    
-    private func updateMarkGrid() {
-        let newGrid = gameGridModel.map { Mark(type: $0.type, inWinningSequence: $0.inWinningSequence) }
-        markGrid = newGrid
-    }
-    
-    private func checkForWin() {
-        gameOverMan = checkForWinningSequence(rows) || checkForWinningSequence(columns) || checkForWinningSequence(diagnals)
-    }
-    
-    private func checkForWinningSequence(_ array: [[MarkModel]]) -> Bool {
-        for markSequence in array {
-            if hasWin(markSequence) {
-                markWinningSequence(markSequence)
-                return true
-            }
-        }
-        return false
-    }
-    
-    private func markWinningSequence(_ markSequence: [MarkModel]) {
-        markSequence.forEach { $0.inWinningSequence = true }
-    }
-    
-    private func hasWin(_ array: [MarkModel]) -> Bool {
-        var arrayToCheck = array
-        guard let firstMarkType = arrayToCheck.removeFirst().type else { return false }
-        return arrayToCheck.reduce(true) { $0 && $1.type == firstMarkType }
-    }
-}
-
 struct GameGridView: View {
     @StateObject private var model = GameModel()
     private let columns = [GridItem(), GridItem(), GridItem()]
     
     var body: some View {
         VStack {
+            WinStats(stats: model.winPercentage)
+            ResultView(gameResult: model.gameResult)
+                .padding(.vertical, 30)
+            GameGrid(model: model)
             Spacer()
-            LazyVGrid(columns: columns) {
-                ForEach(model.markGrid) { mark in
-                    MarkCell(mark: mark)
-                }
-            }
-            .disabled(model.gameOverMan)
-            .environmentObject(model)
-            
-            Spacer()
-            
-            Button(action: {
-                model.resetGame()
-            }, label: {
-                Label("Reset", systemImage: "gobackward")
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(.primary)
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(.orange)
-                            .opacity(0.8)
-                    )
-            })
-            .padding(.bottom)
-            .opacity(model.gameOverMan ? 1 : 0)
+            ResetButton(action: model.resetGame, isShown: model.gameResult != nil)
         }
         .padding(.horizontal, 4)
+    }
+}
+
+// MARK: - Subviews
+
+struct WinStats: View {
+    var stats: String
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            Text(stats)
+                .font(.caption)
+                .padding(.horizontal)
+        }
+    }
+}
+
+struct ResultView: View {
+    var gameResult: GameResult?
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Text(emoji)
+                .font(.system(size: 50))
+            Text(message)
+                .font(.system(size: 50))
+                .opacity(gameResult != nil ? 1 : 0)
+        }
+    }
+    
+    private var message: String {
+        switch gameResult {
+        case .x:
+            return "X Wins "
+        case .o:
+            return "O Wins"
+        case .cat:
+            return "CAT"
+        default:
+            return " "
+        }
+    }
+    
+    private var emoji: String {
+        switch gameResult {
+        case .x:
+            let winEmoji: Set<String> = ["🥳", "😌", "😎", "🤓", "😜"]
+            return winEmoji.randomElement() ?? "🥳"
+        case .o:
+            let loseEmoji: Set<String> = ["😩", "😵", "👿", "🤬", "🖕"]
+            return loseEmoji.randomElement() ?? "😩"
+        case .cat:
+            return "🐈💨"
+        default:
+            return " "
+        }
+    }
+}
+
+struct GameGrid: View {
+    @ObservedObject var model: GameModel
+    private let columns = [GridItem(), GridItem(), GridItem()]
+    
+    var body: some View {
+        LazyVGrid(columns: columns) {
+            ForEach(model.markGrid) { mark in
+                MarkCell(mark: mark)
+            }
+        }
+        .disabled(model.gameResult != nil)
+        .environmentObject(model)
+    }
+}
+
+struct ResetButton: View {
+    let action: () -> Void
+    var isShown: Bool
+    
+    var body: some View {
+        Button(action: {
+            action()
+        }, label: {
+            Label("Reset", systemImage: "gobackward")
+                .frame(maxWidth: .infinity)
+                .foregroundColor(.primary)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(.orange)
+                        .opacity(0.8)
+                )
+        })
+        .padding(.bottom)
+        .opacity(isShown ? 1 : 0)
     }
 }
 
@@ -191,5 +123,14 @@ struct GameGridView_Previews: PreviewProvider {
     
     static var previews: some View {
         GameGridView()
+        
+        ResultView(gameResult: .x)
+            .previewLayout(.sizeThatFits)
+        
+        ResultView(gameResult: .o)
+            .previewLayout(.sizeThatFits)
+        
+        ResultView(gameResult: .cat)
+            .previewLayout(.sizeThatFits)
     }
 }
