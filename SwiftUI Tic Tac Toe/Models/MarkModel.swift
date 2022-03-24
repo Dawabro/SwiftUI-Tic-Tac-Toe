@@ -12,7 +12,7 @@ enum MarkType: String {
     case o = "circle"
 }
 
-final class MarkModel: ObservableObject {
+final class MarkModel: Equatable, ObservableObject {
     let id: UUID
     var type: MarkType?
     var inWinningSequence = false
@@ -24,6 +24,10 @@ final class MarkModel: ObservableObject {
     
     convenience init() {
         self.init(type: nil)
+    }
+    
+    static func == (lhs: MarkModel, rhs: MarkModel) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
