@@ -79,7 +79,7 @@ final class GameModel: ObservableObject {
     }
     
     private func aiMove() {
-        let aiBrain = AIBrain(grid: markGrid, sequences: [rows, columns, diagnals])
+        let aiBrain = AIBrain(grid: markGrid, sequences: [rows, columns, diagnals], myMark: .o)
         guard let aiMarkID = aiBrain.moveID() else { return }
         makeMove(on: aiMarkID)
         aiThinking = false
