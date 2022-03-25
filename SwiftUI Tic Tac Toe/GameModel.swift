@@ -79,8 +79,8 @@ final class GameModel: ObservableObject {
     }
     
     private func aiMove() {
-        let aiBrain = AIBrain(grid: markGrid, sequences: [rows, columns, diagnals], myMark: .o)
-        guard let aiMarkID = aiBrain.moveID() else { return }
+        let aiBrain = AIBrain(sequences: [rows, columns, diagnals], myMark: .o)
+        guard let aiMarkID = markIDFrom(modelID:aiBrain.moveID()) else { return }
         makeMove(on: aiMarkID)
         aiThinking = false
     }
@@ -146,5 +146,10 @@ final class GameModel: ObservableObject {
         }
         
         winPercentage = winPercentageFormatter.string(from: NSNumber(value: gameStats.winPercentage)) ?? "%0.0"
+    }
+    
+    private func markIDFrom(modelID: UUID?) -> UUID? {
+        guard let modelID = modelID else { return nil }
+        return markGrid.first { $0.modelID == modelID }?.id
     }
 }
