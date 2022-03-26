@@ -22,6 +22,7 @@ final class GameModel: ObservableObject {
     private var rows = [[MarkModel]]()
     private var columns = [[MarkModel]]()
     private var diagnals = [[MarkModel]]()
+    private var xGoesFirst = true
     private var playersTurn = true
     private var aiThinking = false
     private let aiThinkTime = 0.4...0.75
@@ -46,18 +47,17 @@ final class GameModel: ObservableObject {
     func tapped(_ mark: Mark) {
         guard !aiThinking else { return }
         rateLimiter.execute { playerMove(on: mark.id) }
-        
-        guard gameResult == nil else { return }
-        if hasOpenMarks {
-            makeAIMove()
-        } else {
-            gameResult = .cat
-        }
+        makeNextMove()
     }
     
     private func playerMove(on id: UUID) {
         guard playersTurn else { return }
         makeMove(on: id)
+    }
+    
+    private func makeNextMove() {
+        guard gameResult == nil && !playersTurn else { return }
+        makeAIMove()
     }
     
     private func makeAIMove() {
@@ -75,6 +75,7 @@ final class GameModel: ObservableObject {
         gameGridModel[index].type = playersTurn ? .x : .o
         checkForWin()
         updateMarkGrid()
+        checkForCatGame()
         playersTurn.toggle()
     }
     
@@ -90,7 +91,9 @@ final class GameModel: ObservableObject {
         populateSequences()
         gameResult = nil
         updateMarkGrid()
-        playersTurn = true
+        xGoesFirst.toggle()
+        playersTurn = xGoesFirst
+        makeNextMove()
     }
     
     private func populateSequences() {
@@ -108,6 +111,15 @@ final class GameModel: ObservableObject {
     private func checkForWin() {
         guard checkForWinningSequence(rows) || checkForWinningSequence(columns) || checkForWinningSequence(diagnals) else { return }
         gameResult = playersTurn ? .x : .o
+    }
+    
+    private func checkForCatGame() {
+        guard isCatGame() else { return }
+        gameResult = .cat
+    }
+    
+    private func isCatGame() -> Bool {
+        gameResult == nil && !hasOpenMarks
     }
     
     private func checkForWinningSequence(_ array: [[MarkModel]]) -> Bool {
